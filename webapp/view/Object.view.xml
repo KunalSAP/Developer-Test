@@ -1,42 +1,155 @@
 <mvc:View
-	controllerName="au.com.bournedigital.developertest.controller.Object"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:semantic="sap.f.semantic"
-	xmlns:footerbar="sap.ushell.ui.footerbar">
+    xmlns:layout="sap.ui.layout"
+    controllerName="au.com.bournedigital.developertest.controller.Object"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:semantic="sap.f.semantic"
+    xmlns:footerbar="sap.ushell.ui.footerbar"
+>
+    <semantic:SemanticPage
+        id="page"
+        headerPinnable="false"
+        toggleHeaderOnTitleClick="false"
+        busy="{objectView>/busy}"
+        busyIndicatorDelay="{objectView>/delay}"
+        headerExpanded="true"
+    >
+        <semantic:titleExpandedContent>
+            <HBox displayInline="true">
+                <Title
+                    text="{Customer/CompanyName}"
+                    titleStyle="H3"
+                    class="sapUiMediumMarginEnd"
+                />
+                <Text
+                    text="Order ID: {OrderID}"
+                    class="sapUiTinyMarginTop"
+                />
+            </HBox>
+        </semantic:titleExpandedContent>
+        <semantic:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute
+                        title="{i18n>attrContactName}"
+                        text="{Customer/ContactName}"
+                    />
 
-	<semantic:SemanticPage
-		id="page"
-		headerPinnable="false"
-		toggleHeaderOnTitleClick="false"
-		busy="{objectView>/busy}"
-		busyIndicatorDelay="{objectView>/delay}">
+                    <ObjectAttribute
+                        title="{i18n>attrContactTitle}"
+                        text="{Customer/ContactTitle}"
+                    />
 
-		<semantic:titleHeading>
-			<Title text="{CustomerID}" />
-		</semantic:titleHeading>
+                    <ObjectAttribute
+                        title="{i18n>attrContactPhone}"
+                        text="{Customer/Phone}"
+                    />
+                </layout:VerticalLayout>
 
-		<semantic:headerContent>
-			<ObjectNumber
-				number="{
-					path: 'OrderID',
-					formatter: '.formatter.numberUnit'
-				}"
-			/>
-		</semantic:headerContent>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute
+                        title="{i18n>attrAddress}"
+                        text="{Customer/Address}"
+                    />
 
-		<semantic:sendEmailAction>
-			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
-		</semantic:sendEmailAction>
+                    <ObjectAttribute
+                        title="{i18n>attrPostalCodeCity}"
+                        text="{Customer/PostalCode} {Customer/City}"
+                    />
 
-		<semantic:shareInJamAction>
-			<semantic:ShareInJamAction id="shareInJam" visible="{FLP>/isShareInJamActive}" press="onShareInJamPress"/>
-		</semantic:shareInJamAction>
+                    <ObjectAttribute
+                        title="{i18n>attrCountry}"
+                        text="{Customer/Country}"
+                    />
+                </layout:VerticalLayout>
 
-		<semantic:saveAsTileAction>
-			<footerbar:AddBookmarkButton id ="shareTile" title="{objectView>/saveAsTileTitle}" />
-		</semantic:saveAsTileAction>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>attrTotalValue}" />
+                    <Title
+                        text="{objectView>/TotalValue}"
+                        titleStyle="H2"
+                    />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </semantic:headerContent>
 
-	</semantic:SemanticPage>
+        <semantic:content>
+            <Table
+                id="idOrderDetailsTable"
+                inset="false"
+                class="sapFSemanticPageAlignContent"
+                width="auto"
+                items="{ path:'Order_Details'}"
+                growing="true"
+                growingScrollToLoad="true"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title
+                            id="idTableHeader"
+                            text="{i18n>OrderItems}"
+                            level="H3"
+                        />
+                        <ToolbarSpacer />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="{i18n>productIdColumn}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>unitPriceColumn}" />
+                    </Column>
+                    <Column>
+                        <Text text="{i18n>quantityColumn}" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="{i18n>discountColumn}" />
+                    </Column>
+                </columns>
 
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <Text text="{ProductID}" />
+                            <Text text="{UnitPrice}" />
+                            <Text text="{Quantity}" />
+                            <ObjectNumber
+                                number="{
+                                path:'Discount',
+                                formatter:'.formatter.numConvert'
+                            }"
+                                state="{ 
+                                 path:'Discount',
+                                 formatter:'.formatter.discountMarker'
+                             }"
+                            />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </semantic:content>
+
+        <semantic:sendEmailAction>
+            <semantic:SendEmailAction
+                id="shareEmail"
+                press="onShareEmailPress"
+            />
+        </semantic:sendEmailAction>
+
+        <semantic:shareInJamAction>
+            <semantic:ShareInJamAction
+                id="shareInJam"
+                visible="{FLP>/isShareInJamActive}"
+                press="onShareInJamPress"
+            />
+        </semantic:shareInJamAction>
+
+        <semantic:saveAsTileAction>
+            <footerbar:AddBookmarkButton
+                id="shareTile"
+                title="{objectView>/saveAsTileTitle}"
+            />
+        </semantic:saveAsTileAction>
+    </semantic:SemanticPage>
 </mvc:View>

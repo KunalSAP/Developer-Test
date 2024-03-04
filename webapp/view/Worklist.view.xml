@@ -20,6 +20,7 @@
 				width="auto"
 				items="{
 					path: '/Orders',
+					parameters: { expand:'Customer, Employee '},
 					sorter: {
 						path: 'CustomerID',
 						descending: false
@@ -45,8 +46,14 @@
 				</headerToolbar>
 
 				<columns>
-					<Column id="nameColumn">
-						<Text text="{i18n>tableNameColumnTitle}" id="nameColumnTitle"/>
+				    <Column id="customerNameColumn">
+						<Text text="{i18n>tablecustomerNameColumnTitle}" id="customerNameColumnTitle"/>
+					</Column>
+					<Column id="orderDateColumn">
+						<Text text="{i18n>tableOrderDateColumnTitle}" id="orderDateColumnTitle"/>
+					</Column>
+					<Column id = "employeeResponsibleColumn" >
+					<Text text="{i18n>tableEmployeeResponsibleColumnTitle}" id="employeeResponsibleColumnTitle" />
 					</Column>
 					<Column id="unitNumberColumn" hAlign="End">
 						<Text text="{i18n>tableUnitNumberColumnTitle}" id="unitNumberColumnTitle"/>
@@ -57,9 +64,19 @@
 					<ColumnListItem
 						type="Navigation"
 						press="onPress">
+						
 						<cells>
-							<ObjectIdentifier
-								title="{CustomerID}"/>
+							<ObjectIdentifier title="{Customer/CompanyName}" text="{CustomerID}"/>
+							<ObjectIdentifier 
+							text="{
+								path: 'OrderDate',
+								formatter:'.formatter.dateConversion'
+								}"/>
+							<!-- <ObjectAttribute text="{Employee/FirstName} {Employee/LastName}"
+							                  active="true"
+											  > -->
+							<!-- </ObjectAttribute>	 -->
+								<Link text="{Employee/FirstName} {Employee/LastName} " press=".handleEmployeeQuickViewPress"/>
 							<ObjectNumber
 								number="{
 									path: 'OrderID',
